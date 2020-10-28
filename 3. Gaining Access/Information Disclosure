@@ -1,0 +1,36 @@
+Response Headers
+	Versioning Info
+	
+	Security Headers
+		securityheaders.com		
+
+		HSTS - prevents HTTP downgrade
+		Same Origin - reduce cross-origin access
+
+	Custom Headers
+		use TRACE method
+
+	Server info messages 
+		/cgi-bin/phpinfo.php
+
+Comments
+
+Robots.txt
+
+Backups
+
+Version Control Info
+	Git 
+		wget -r <URL>/.git
+		git log -p
+	
+	/v1 v /v2
+
+Trigger Errors
+	fuzz inputs
+	change methods
+
+SSL Ciphers
+	nmap --script=ssl-enum-ciphers -p 443 <domain>
+
+

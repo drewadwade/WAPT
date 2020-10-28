@@ -1,0 +1,33 @@
+ii. Subdirectories & Files
+
+gobuster
+	gobuster dir -u <http://...> -w <wordlist>
+		for directory traversal when cookie needed:
+			-c PHPSESSID=<COOKIE_VALUE>
+
+	scan directories and files against multiple hosts
+
+	#!/bin/bash
+
+	while read p: do
+		filename=$(echo $p | cut -d '/' -f3)
+		gobuster dir -u "$p" -w <directory wordlist> -f -e -r -k -o gobuster/gobuster_dir_$1_$filename.txt
+		cat gobuster_dir_$1_$filename.txt | tee -a gobuster_$1.txt
+	done < alive_$1.txt
+
+	while read p: do
+		filename=$(echo $p | cut -d '/' -f3)
+		gobuster dir -u "$p" -w <files wordlist> -f -e -r -k -o gobuster/gobuster_files_$1_$filename.txt
+		cat gobuster_files_$1_$filename.txt | tee -a gobuster_$1.txt
+	done < alive_$1.txt
+
+
+ffuf 
+	ffuf -u https://example.com/FUZZ -w ./wordlist.txt
+
+	https://codingo.io/tools/ffuf/bounty/2020/09/17/everything-you-need-to-know-about-ffuf.html#basic-usage
+
+/robots.txt
+/sitemap.xml
+
+Google Dorks

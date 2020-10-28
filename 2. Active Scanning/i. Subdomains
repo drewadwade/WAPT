@@ -1,0 +1,28 @@
+i. Subdomains
+
+see drewadwade/recon4fish and Gr1mmie/sumrecon
+
+domained 
+	Runs sublist3r, enumall, knockpy, subbrute, massdns, recon-ng, amass, and subfinder
+
+assetfinder
+	assetfinder <domain> 
+	assetfinder <domain> --subs-only
+
+amass
+	amass enum -d <domain>
+
+httprobe 
+	use to confirm subdomain is actively available
+
+Wayback Machine
+	
+
+Burp Suite 
+	Manual spidering
+	Active scanner (Pro)
+		Set scope!
+
+
+
+	 

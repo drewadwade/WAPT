@@ -1,0 +1,45 @@
+see: www.owasp.org/index.php
+
+SQL Injection
+	Parameterised Statements
+		These string concatenations are unsafe:
+			query = "SELECT * FROM users WHERE email = '" + input + "'";
+		
+			$name = $_REQUEST['name'];
+			$email = $_REQUEST['email'];
+			query = "INSERT INTO CustomerTable (Name, Email) VALUES ('$name', '$email')";"
+
+		These parameterisations are not unsafe:
+			query = "SELECT * FROM users WHERE email = ?";
+
+			$name = $_REQUEST['name'];
+			$email = $_REQUEST['email'];
+			query = "INSERT INTO CustomerTable (Name, Email) VALUES (?, ?)"
+
+		Also allows you to handle less malicious scenarios, such as where the user supplies a value like "O'Leary" 
+
+		Only works for WHERE, INSERT, and UPDATE queries
+
+	Sanitising Input
+
+Broken Authentication
+	Implement Multifactor Authentication
+	Remove Default Credentials
+	Require Strong Passwords
+	Prohibit Weak Passwords (e.g. not top 10000)
+	Limit Failed Login Attempts
+	Harden Account Recovery and Login Portal (standardise messages)
+	Implement Random, High-Entropy Session ID at Each Login
+
+Sensitive Data Exposure
+	Classify data and apply controls accordingly
+	Don't store sensitive data unnecessarily
+		Truncate or tokenise if transaction data must be kept
+	Encrypt in transit and at rest
+	Implement updated and strong algorithms, protocols, and keys
+	Disable caching of sensitive data
+	Use strong adaptive and salted hashing for passwords
+
+XXE
+	Disable DTDs
+

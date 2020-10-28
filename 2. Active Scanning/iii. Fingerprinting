@@ -1,0 +1,11 @@
+ii. Fingerprinting
+
+
+whatweb
+	whatweb -v <domain or IP>
+
+
+nmap 
+	ciphers: nmap -p 443 --script=ssl-enum-ciphers <IP>
+
+

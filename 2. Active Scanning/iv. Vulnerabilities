@@ -1,0 +1,19 @@
+nikto
+	nikto -h domain.com
+
+
+Nessus
+	free for 16 hosts or fewer
+	/etc/init.d/nessusd start
+	https://kali:8834
+
+
+OWASP ZAP
+
+
+subjack
+	check for possible domain takeover
+	subjack -w domain_list_file.txt -t 100 -timeout 30 -ssl -c /go/src/github.com/haccer/subjack/fingerprints.json -v 3 -o outfile.txt
+
+
+Burp Suite Active Scan (pro)

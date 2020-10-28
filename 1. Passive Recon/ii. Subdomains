@@ -1,0 +1,32 @@
+ii. Subdomains
+
+sublist3r
+	sublist3r -d example.com -t <# of threads>
+ 
+
+crt.sh
+	Certificate search for subdomains
+
+
+Google
+	site:example.com
+	filetype:php
+	
+
+bluto
+	Github.com/darryllane/bluto
+		Pip install bluto
+		Fix /usr/local/lib/python2.7/dist-packages/Bluto/modules/data_mine.py
+		Replace   “import … as olefile”   with  “import olefile” 
+	finds name servers, mail servers
+	Passive netcraft 
+	DNS zone transfers
+	Tests for DNS wildcards
+	Queries Google, Bing (not working), & LinkedIn
+	Can use API key to query hunter.io
+	     Email enumeration
+	Compromised account enumeration (haveibeenpwned?)
+	Metadata harvesting
+
+
+

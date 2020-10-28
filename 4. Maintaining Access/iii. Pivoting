@@ -1,0 +1,14 @@
+iii. Pivoting
+
+Autorouting
+	Metasploit meterpreter
+	See current autorouting
+		run autoroute -p 
+	Set autorouting from current network to other network (e.g. 10.10.10.0)
+		run autoroute -s 10.10.10.0/24
+
+Looking for other networks
+	arp -a
+	netstat -n
+
+

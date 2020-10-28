@@ -1,0 +1,14 @@
+
+
+
+
+
+Access-Control-Allow-Origin: *
+	can't send cookies with request
+	circumvent by retrieving data from browser cache 
+		fetch("https://example.com/api/user", {
+			method: 'GET',
+			chace: 'force-cache'
+			}).then(response => response.text())
+		.then(body => alert(body))
+	mitigate using cache-control header

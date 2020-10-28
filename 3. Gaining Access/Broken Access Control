@@ -1,0 +1,32 @@
+Modify URL
+
+Forced browsing to authenticated pages as unauthenticated user
+	/admin
+	/ADMIN, /AdMiN (bypass access control on /admin)
+
+IDOR
+
+Method-based
+	GET v POST
+	POST v POSTX
+
+Source-based
+	Referer
+
+Response content on redirect may leak information
+
+privilege elevation
+
+metadata manipulation
+	JWT 
+	cookie
+	hidden field
+
+CORS misconfiguration allowing API access
+
+MFA
+	check that all steps in process are required
+		can some or all be bypassed by an unauthenticated or partially authenticated user?
+
+check for decodable/predictable cookies
+	
