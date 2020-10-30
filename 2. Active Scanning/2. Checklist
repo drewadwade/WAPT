@@ -1,0 +1,46 @@
+Checklist
+
+[ ] Map visible content
+[ ] Discover hidden & default content
+[ ] Check for files that expose content, such as robots.txt, sitemap.xml, .DS_Store
+[ ] Check for differences in content based on User Agent (eg, Mobile sites, access as a Search engine Crawler)  
+[ ] Identify the technologies used
+[ ] Identify client-side code  
+[ ] Map the attack surface
+[ ] Identify Debug parameters  
+[ ] Identify data entry points
+[ ] Identify user roles  
+[ ] Identify multiple versions/channels (e.g. web, mobile web, mobile app, web services)  
+[ ] Identify co-hosted and related applications  
+[ ] Identify third-party hosted content  
+[ ] Scan for public cloud resources using cloud_enum (https://github.com/initstring/cloud_enum)
+[ ] Identify all hostnames and ports  
+[ ] Check for commonly used app and admin URLs  
+	/robots.txt
+	/sitemap.xml
+	/cgi-bin/
+	/cgi-bin/phpinfo.php
+	/phpmyadmin
+	/wpadmin
+	/admin
+	/administrator
+	/administration
+	/readme.html
+	/license.txt
+	/fseditor
+[ ] Check for old, backup and unreferenced files  
+[ ] Check HTTP methods supported and Cross Site Tracing (XST)  
+[ ] Test file extensions handling  
+[ ] Test for security HTTP headers (e.g. CSP, X-Frame-Options, HSTS)  
+[ ] Test for policies (e.g. Flash, Silverlight, robots)  
+[ ] Test for non-production data in live environment, and vice-versa  
+[ ] Check for sensitive data in client-side code (e.g. API keys, credentials)  
+[ ] Check validity of API keys using keyhacks (https://github.com/streaak/keyhacks)
+[ ] Take over unclaimed (sub)domains (https://github.com/EdOverflow/can-i-take-over-xyz
+[ ] Check SSL Version, Algorithms, Key length  
+[ ] Check for Digital Certificate Validity (Duration, Signature and CN)  
+[ ] Check credentials only delivered over HTTPS  
+[ ] Check that the login form is delivered over HTTPS  
+[ ] Check session tokens only delivered over HTTPS  
+[ ] Check if HTTP Strict Transport Security (HSTS) in use  
+

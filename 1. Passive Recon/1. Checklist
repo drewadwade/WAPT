@@ -1,0 +1,6 @@
+1. Checklist
+
+## Recon on Wildcard Domain
+
+[ ] Update DNS servers using dnsvalidator
+[ ] Run Recon4Fish script
