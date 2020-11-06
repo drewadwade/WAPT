@@ -3,4 +3,4 @@
 ## Recon on Wildcard Domain
 
 [ ] Update DNS servers using dnsvalidator
-[ ] Run Recon4Fish script
+[ ] Run Recon4Fish script - recon <domain>
