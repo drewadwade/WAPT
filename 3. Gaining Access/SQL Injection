@@ -6,8 +6,10 @@ finding SQLi
 		try other reorder numbers to find valid values
 	' OR 1=1 and 1=2 UNION SELECT 1,database(),3,4--%20
 		gets name of database in the #2 field
-
 	Fuzzing using Intruder and SecLists
+
+
+ORACLE REQUIRES ; AT END OF LINE
 
 
 UNION attack
