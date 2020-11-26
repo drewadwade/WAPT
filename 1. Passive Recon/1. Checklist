@@ -1,6 +1,12 @@
 1. Checklist
 
-## Recon on Wildcard Domain
+Update DNS servers using dnsvalidator
 
-[ ] Update DNS servers using dnsvalidator
-[ ] Run Recon4Fish script - recon <domain>
+Confirm provided IPs and hostnames are in scope
+
+recon <target_domain>
+
+Google: inurl:<taget_domain>
+Baidu: 
+Shodan: org:<target_company_name>
+		ip:<target_ip>
