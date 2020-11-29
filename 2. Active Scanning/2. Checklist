@@ -1,6 +1,6 @@
 Checklist
 
-gobuster dir -u <target_IP_host> -w ~/SecLists/Discovery/Web-Content/directory-list-2.3-big.txt 
+gobuster dir -u <target_IP_host> -w ~/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt 
 
 /robots.txt
 /sitemap.xml
