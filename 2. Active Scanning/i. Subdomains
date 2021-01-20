@@ -2,6 +2,9 @@ i. Subdomains
 
 see drewadwade/recon4fish and Gr1mmie/sumrecon
 
+wordlists - generated monthly
+	wordlists.assetnote.io
+
 domained 
 	Runs sublist3r, enumall, knockpy, subbrute, massdns, recon-ng, amass, and subfinder
 

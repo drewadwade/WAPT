@@ -1,5 +1,10 @@
 ii. Subdirectories & Files
 
+
+wordlists - generated monthly
+	wordlists.assetnote.io
+
+
 gobuster
 	gobuster dir -u <http://...> -w <wordlist>
 		for directory traversal when cookie needed:
@@ -22,10 +27,26 @@ gobuster
 	done < alive_$1.txt
 
 
-ffuf 
-	ffuf -u https://example.com/FUZZ -w ./wordlist.txt
+feroxbuster (with Burp on 127.0.0.1:8080)
 
+	feroxbuster -u http://<target_IP_or_URL> --insecure --proxy http://127.0.0.1:8080 -w <path_to_wordlist>
+
+
+ffuf 
 	https://codingo.io/tools/ffuf/bounty/2020/09/17/everything-you-need-to-know-about-ffuf.html#basic-usage
+
+	Basic usage
+	ffuf -w <wordlist_path> -u https://example.com/FUZZ 
+
+	Basic usage with cookie
+	ffuf -w <wordlist_path> -u https://example.com/FUZZ -b "cookie_content"
+
+	Basic usage through Burp (on 127.0.0.1:8080)
+	ffuf -w <wordlist_path> -u https://example.com/FUZZ -replay-proxy http://127.0.0.1:8080
+
+	Fuzzing POST data 
+	ffuf -w <wordlist_path> -X POST -d "<body_content=FUZZ>" -u <URL> -replay-proxy http://127.0.0.1:8080
+
 
 
 Google Dorks
