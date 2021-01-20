@@ -27,7 +27,7 @@ gobuster
 	done < alive_$1.txt
 
 
-feroxbuster (with Burp on 127.0.0.1:8080)
+feroxbuster through Burp (on 127.0.0.1:8080)
 
 	feroxbuster -u http://<target_IP_or_URL> --insecure --proxy http://127.0.0.1:8080 -w <path_to_wordlist>
 
