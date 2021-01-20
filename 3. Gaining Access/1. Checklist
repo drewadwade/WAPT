@@ -121,7 +121,7 @@ Checklist
 [ ] Check for proper use of salting  
 [ ] Check for randomness functions  
 
-Risky Functionality - File Uploads
+### Risky Functionality - File Uploads
 [ ] Test that acceptable file types are whitelisted  
 [ ] Test that file size limits, upload frequency and total file counts are defined and are enforced  
 [ ] Test that file contents match the defined file type  

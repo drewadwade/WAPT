@@ -1,6 +1,7 @@
 Remove all backdoors and/or rootkits installed
 
 Remove all executables, scripts, and temporary files from a compromised system
+
 If possible, use secure delete methods for removing the files and folders
 
 Remove any user accounts created for connecting back to compromise systems

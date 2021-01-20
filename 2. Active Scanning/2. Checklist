@@ -7,7 +7,7 @@ gobuster dir -u <target_IP_host> -w ~/SecLists/Discovery/Web-Content/directory-l
 /readme.html
 /license.txt
 /fseditor
-/cgi-bin   -gobuster inside cgi-bin for .sh, .cgi, .py, .pl, etc
+/cgi-bin   **gobuster inside cgi-bin for .sh, .cgi, .py, .pl, etc**
 
 whatweb -v <target_IP_host>
 https://www.exploit-db.com/google-hacking-database
@@ -43,6 +43,7 @@ Check for default credentials
 Check credentials only delivered over HTTPS  
 Check that the login form is delivered over HTTPS  
 Check session tokens only delivered over HTTPS  
+	cookie secure flag
 Check for account takeover using password reset
 Identify user roles  
 
