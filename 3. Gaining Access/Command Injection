@@ -1,0 +1,18 @@
+shell metacharacters
+  ;
+  |
+  ||
+  &
+  &&
+  \n
+  <
+  >
+  $()
+
+test w/ ping -n 30 127.1 to cause delay (indicates command running even if no browser output)
+
+replace delimiters with
+  %0a 
+  %0d%0a
+
+replace spaces with tabs
