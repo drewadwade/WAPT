@@ -27,6 +27,7 @@ Test values:
 	<marquee>
 	`';!--"<marquee>=&{()}
 	<script>alert(document.location)</script>
+	<svg xmlns="http://www.w3.org/2000/svg"><script>alert(document.location)</script></svg>
 	<img src="javascript:alert(document.location);">
 	<body onload=alert(document.location)>
 
